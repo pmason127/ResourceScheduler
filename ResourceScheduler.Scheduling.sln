@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceScheduler.Scheduling", "ResourceScheduler.Scheduling\ResourceScheduler.Scheduling.csproj", "{FD19E243-D90D-4992-9700-028B75D6A0C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedResources.Common", "SharedResources.Common\SharedResources.Common.csproj", "{8CDA474B-EEE8-4C38-BD96-EC8DB74494EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD19E243-D90D-4992-9700-028B75D6A0C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD19E243-D90D-4992-9700-028B75D6A0C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD19E243-D90D-4992-9700-028B75D6A0C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD19E243-D90D-4992-9700-028B75D6A0C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CDA474B-EEE8-4C38-BD96-EC8DB74494EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CDA474B-EEE8-4C38-BD96-EC8DB74494EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CDA474B-EEE8-4C38-BD96-EC8DB74494EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CDA474B-EEE8-4C38-BD96-EC8DB74494EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
