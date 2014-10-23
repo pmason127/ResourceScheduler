@@ -7,15 +7,21 @@ using System.Text;
 
 namespace ResourceScheduler.Scheduling.Internal.Data
 {
-    public static class DataUtility
+    public interface ISqlConnectionManager
     {
-        public static string ConnectionString { get; set; }
+         SqlConnection  GetSqlConnection();
+         SqlCommand GetSprocCommand(string commandText,SqlConnection conn);
+    }
 
-        public static SqlConnection  GetSqlConnection()
+    public  class SqlConnectionManager : ISqlConnectionManager
+    {
+      
+
+        public  SqlConnection  GetSqlConnection()
         {
-            return new SqlConnection(ConnectionString);
+            return new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["resources"].ConnectionString);
         }
-        public static SqlCommand GetSprocCommand(string commandText,SqlConnection conn)
+        public  SqlCommand GetSprocCommand(string commandText,SqlConnection conn)
         {
             SqlCommand cmd = new SqlCommand(commandText);
             cmd.CommandTimeout = 120;

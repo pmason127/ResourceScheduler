@@ -38,6 +38,7 @@ namespace ResourceScheduler.Scheduling.Internal.Services
         {
             Validator.NotNull("schedule",schedule,"schedule cannot be null");
             Validator.NotIsNullOrWhitespace("Description",schedule.Description,"Description must be supplied");
+            Validator.NotIsNullOrWhitespace("Name", schedule.Name, "Description must be supplied");
         }
         #endregion
     }

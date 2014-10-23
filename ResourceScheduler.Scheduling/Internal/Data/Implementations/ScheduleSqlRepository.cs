@@ -7,15 +7,19 @@ using System.Text;
 
 namespace ResourceScheduler.Scheduling.Internal.Data.Implementations
 {
-    public class ScheduleSqlRepository:IScheduleRepository 
+    public class ScheduleSqlRepository:IScheduleRepository
     {
-        
+        private ISqlConnectionManager _connection;
+        public ScheduleSqlRepository(ISqlConnectionManager connectionManager)
+        {
+            _connection = connectionManager;
+        }
 
         public void Create(Entities.Schedule schedule)
         {
-            using (SqlConnection conn = DataUtility.GetSqlConnection())
+            using (SqlConnection conn = _connection.GetSqlConnection())
             {
-                using (SqlCommand cmd = DataUtility.GetSprocCommand("rs_Scheduling_Schedule_Create", conn))
+                using (SqlCommand cmd = _connection.GetSprocCommand("rs_Scheduling_Schedule_Create", conn))
                 {
                     conn.Open();
                     cmd.Parameters.Add("@ScheduleId", SqlDbType.UniqueIdentifier).Direction = ParameterDirection.Output;
@@ -39,9 +43,9 @@ namespace ResourceScheduler.Scheduling.Internal.Data.Implementations
 
         public void Delete(Guid scheduleId)
         {
-            using (SqlConnection conn = DataUtility.GetSqlConnection())
+            using (SqlConnection conn = _connection.GetSqlConnection())
             {
-                using (SqlCommand cmd = DataUtility.GetSprocCommand("rs_Scheduling_Schedule_Delete", conn))
+                using (SqlCommand cmd = _connection.GetSprocCommand("rs_Scheduling_Schedule_Delete", conn))
                 {
                     conn.Open();
                     cmd.Parameters.Add("@ScheduleId", SqlDbType.UniqueIdentifier).Value = scheduleId;
