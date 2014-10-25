@@ -16,6 +16,7 @@ namespace ResourceScheduler.Tests
         [TestFixtureTearDown]
         public void TearDown()
         {
+           // return;
             var scm = new SqlConnectionManager();
             using (SqlConnection conn = scm.GetSqlConnection())
             {

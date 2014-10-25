@@ -12,7 +12,7 @@ using ResourceScheduler.Scheduling.Internal.Entities;
 
 namespace ResourceScheduler.Tests.Integration
 {
-    public class EventCreate:BaseIntegrationTest
+    public class EventCreate_Daily_interval:BaseIntegrationTest
     {
         private IScheduleRepository _scheduleRepo = null;
         private Schedule _schedule;
@@ -29,31 +29,12 @@ namespace ResourceScheduler.Tests.Integration
             _scheduleRepo.Create(_schedule);
         }
 
-        [Test]
-        public void create_single_event()
+     [Test]
+        public void create_event_every_other_day()
         {
-            ScheduleEvent ev = new ScheduleEvent()
-            {
-                IsAllDay = false,
-                CreateDateUtc = DateTime.UtcNow,
-                Description = "Test event",
-                IsCancelled = false,
-                StartUtc = DateTime.UtcNow.AddDays(2),
-                EndUtc = DateTime.UtcNow.AddDays(2).AddHours(1),
-                Name = "Sample Event",
-                RecurrenceType = RecurrenceType.None,
-                TimeZoneId = TimeZoneInfo.Local.Id,
-                ScheduleId = _schedule.Id.Value
-            };
-            _eventRepo.Create(ev);
-            Assert.IsTrue(ev.Id.HasValue);
-        }
-        [Test]
-        public void create_event_weekly_on_day()
-        {
-            var start = new DateTime(2014, 10, 23, 10, 00, 00, DateTimeKind.Utc);
-            var end = new DateTime(2014, 10, 23, 11, 00, 00, DateTimeKind.Utc);
-            var rend = new DateTime(2014, 12, 4, 11, 00, 00, DateTimeKind.Utc);
+            var start = new DateTime(2014, 10, 27, 10, 00, 00, DateTimeKind.Utc);
+            var end = new DateTime(2014, 10, 27, 11, 00, 00, DateTimeKind.Utc);
+            var rend = new DateTime(2014, 11,5, 11, 00, 00, DateTimeKind.Utc);
             ScheduleEvent ev = new ScheduleEvent()
             {
                 IsAllDay = false,
@@ -61,12 +42,11 @@ namespace ResourceScheduler.Tests.Integration
                 Description = "Test event",
                 IsCancelled = false,
                 StartUtc = start,
-                EndUtc =end,
+                EndUtc =end,//12
                 Name = "Sample Event",
-                RecurrenceType = RecurrenceType.Weekly,
-                RecurrenceDays = new []{4},
+                RecurrenceType = RecurrenceType.Daily,
                 TimeZoneId = TimeZoneInfo.Local.Id,
-                RecurrenceInterval =1,
+                RecurrenceInterval =2,
                 ScheduleId = _schedule.Id.Value,
                 RecurrenceEnd = rend
             };
@@ -74,7 +54,7 @@ namespace ResourceScheduler.Tests.Integration
             Assert.IsTrue(ev.Id.HasValue);
 
             var events = _eventRepo.GetEvents(start, rend, null);
-            Assert.AreEqual(7,events.Count);
+            Assert.AreEqual(5,events.Count);
         }
     }
 }

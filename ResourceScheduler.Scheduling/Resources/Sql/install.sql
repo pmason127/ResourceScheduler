@@ -409,7 +409,7 @@ BEGIN
 		(
 			SELECT Number,ROW_NUMBER() OVER (ORDER BY Number) AS rownum
 			FROM Numbers
-			WHERE Number >= @cmonth
+			--WHERE Number >= @cmonth
 		) AS t
 		INNER JOIN Calendar c on c.CalendarMonth = t.Number
 		WHERE((t.rownum + (@recurrenceInterval-1)) % @recurrenceInterval = 0 ) 
@@ -437,7 +437,7 @@ BEGIN
 		(
 			SELECT Number,ROW_NUMBER() OVER (ORDER BY Number) AS rownum
 			FROM Numbers
-			WHERE Number >= @cmonth
+			--WHERE Number >= @cmonth
 		) AS t
 		INNER JOIN Calendar c on c.CalendarMonth = t.Number
 		WHERE((t.rownum + (@recurrenceInterval-1)) % @recurrenceInterval = 0 ) 
