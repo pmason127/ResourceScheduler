@@ -12,7 +12,7 @@ using ResourceScheduler.Scheduling.Internal.Entities;
 
 namespace ResourceScheduler.Tests.Integration
 {
-    public class EventCreate_Daily_interval:BaseIntegrationTest
+    public class EventCreate_yearly:BaseIntegrationTest
     {
         private IScheduleRepository _scheduleRepo = null;
         private Schedule _schedule;
@@ -30,11 +30,11 @@ namespace ResourceScheduler.Tests.Integration
         }
 
      [Test]
-        public void create_event_every_other_day()
+        public void create_event_yearly()
         {
             var start = new DateTime(2014, 10, 27, 10, 00, 00, DateTimeKind.Utc);
             var end = new DateTime(2014, 10, 27, 11, 00, 00, DateTimeKind.Utc);
-            var rend = new DateTime(2014, 11,5, 11, 00, 00, DateTimeKind.Utc);
+            var rend = new DateTime(2020, 12, 31, 11, 00, 00, DateTimeKind.Utc);
             ScheduleEvent ev = new ScheduleEvent()
             {
                 IsAllDay = false,
@@ -44,9 +44,10 @@ namespace ResourceScheduler.Tests.Integration
                 StartUtc = start,
                 EndUtc =end,//12
                 Name = "Sample Event",
-                RecurrenceType = RecurrenceType.Daily,
+                RecurrenceType = RecurrenceType.Yearly,
+                RecurrenceDays = new []{1,3},
                 TimeZoneId = TimeZoneInfo.Local.Id,
-                RecurrenceInterval =2,
+                RecurrenceInterval =1,
                 ScheduleId = _schedule.Id.Value,
                 RecurrenceEnd = rend
             };
@@ -54,9 +55,7 @@ namespace ResourceScheduler.Tests.Integration
             Assert.IsTrue(ev.Id.HasValue);
 
             var events = _eventRepo.GetEvents(start, rend, null);
-            foreach (var e in events)
-                Console.WriteLine(e.StartUtc);
-            Assert.AreEqual(5,events.Count);
+            Assert.AreEqual(7,events.Count);
         }
     }
 }

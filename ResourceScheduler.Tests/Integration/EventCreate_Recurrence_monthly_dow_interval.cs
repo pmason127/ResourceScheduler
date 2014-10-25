@@ -12,7 +12,7 @@ using ResourceScheduler.Scheduling.Internal.Entities;
 
 namespace ResourceScheduler.Tests.Integration
 {
-    public class EventCreate_Daily_interval:BaseIntegrationTest
+    public class EventCreate_monthly_dayofweek_interval:BaseIntegrationTest
     {
         private IScheduleRepository _scheduleRepo = null;
         private Schedule _schedule;
@@ -30,11 +30,11 @@ namespace ResourceScheduler.Tests.Integration
         }
 
      [Test]
-        public void create_event_every_other_day()
+        public void create_event_monthly_dow_interval()
         {
-            var start = new DateTime(2014, 10, 27, 10, 00, 00, DateTimeKind.Utc);
-            var end = new DateTime(2014, 10, 27, 11, 00, 00, DateTimeKind.Utc);
-            var rend = new DateTime(2014, 11,5, 11, 00, 00, DateTimeKind.Utc);
+            var start = new DateTime(2014, 10, 5, 10, 00, 00, DateTimeKind.Utc);
+            var end = new DateTime(2014, 10, 5, 11, 00, 00, DateTimeKind.Utc);
+            var rend = new DateTime(2015, 3,5, 11, 00, 00, DateTimeKind.Utc);
             ScheduleEvent ev = new ScheduleEvent()
             {
                 IsAllDay = false,
@@ -44,7 +44,7 @@ namespace ResourceScheduler.Tests.Integration
                 StartUtc = start,
                 EndUtc =end,//12
                 Name = "Sample Event",
-                RecurrenceType = RecurrenceType.Daily,
+                RecurrenceType = RecurrenceType.MonthlyDayOfWeek,
                 TimeZoneId = TimeZoneInfo.Local.Id,
                 RecurrenceInterval =2,
                 ScheduleId = _schedule.Id.Value,
@@ -54,9 +54,9 @@ namespace ResourceScheduler.Tests.Integration
             Assert.IsTrue(ev.Id.HasValue);
 
             var events = _eventRepo.GetEvents(start, rend, null);
-            foreach (var e in events)
-                Console.WriteLine(e.StartUtc);
-            Assert.AreEqual(5,events.Count);
+         foreach(var e in events)
+             Console.WriteLine(e.StartUtc);
+            Assert.AreEqual(3,events.Count);
         }
     }
 }

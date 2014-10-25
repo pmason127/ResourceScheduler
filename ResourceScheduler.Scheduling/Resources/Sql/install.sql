@@ -457,7 +457,7 @@ BEGIN
 		(
 			SELECT Number,ROW_NUMBER() OVER (ORDER BY Number) AS rownum
 			FROM Numbers
-			WHERE Number >= @cyear
+			--WHERE Number >= @cyear
 		) AS t
 		INNER JOIN Calendar c on c.CalendarYear  = t.Number
 		WHERE((t.rownum + (@recurrenceInterval-1)) % @recurrenceInterval = 0 ) 

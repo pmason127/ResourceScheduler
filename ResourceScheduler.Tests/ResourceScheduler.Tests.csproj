@@ -47,9 +47,14 @@
   <ItemGroup>
     <Compile Include="BaseIntegrationTest.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Integration\EventCreate_Recurrence_monthly_interval.cs" />
+    <Compile Include="Integration\EventCreate_Recurrence_monthly_dow_interval.cs" />
+    <Compile Include="Integration\EventCreate_Recurrence_monthly_dow.cs" />
     <Compile Include="Integration\EventCreate_Recurrence_monthly.cs" />
     <Compile Include="Integration\EventCreate_Recurrence_daily_interval.cs" />
     <Compile Include="Integration\EventCreate_Recurrence_daily.cs" />
+    <Compile Include="Integration\EventCreate_Recurrence_yearly_interval.cs" />
+    <Compile Include="Integration\EventCreate_Recurrence_yearly.cs" />
     <Compile Include="Integration\EventCreate_Recurrence_weekly_internval.cs" />
     <Compile Include="Integration\EventCreate_Recurrence_weekly.cs" />
     <Compile Include="Integration\EventCreate.cs" />
