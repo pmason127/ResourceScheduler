@@ -3,23 +3,24 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
 IF OBJECT_ID(N'dbo.ufnExpandDates', N'TF') IS NOT NULL
     DROP FUNCTION dbo.ufnExpandDates;
 GO
 CREATE FUNCTION dbo.ufnExpandDates(
 	@start datetime,
 	@end datetime,
-	@recurrenceType int,
+	@recurrenceType int = null,
 	@recurrenceInterval int = NULL,
 	@recurrenceDays varchar(7) = NULL,
 	@businessDaysOnly bit = 0,
-	@excludeHolidays bit =1
+	@excludeHolidays bit =1,
+	@identifier int = 1
 	
 )
 RETURNS @dates TABLE 
 (
     -- Columns returned by the function
+	identifier int,
   calendarDate datetime
 )
 AS 
@@ -36,11 +37,15 @@ BEGIN
 	SET @cweek = DATEPART(WEEK,@start)
 	SET @cwday = DATEPART ( dw , @start)-1
 	--SELECT @start,@end,@cdate,@cmonth,@cyear,@cweek
-
-	IF(@recurrenceType = 1) -- daily
+	IF(@recurrenceType IS NULL)
 	BEGIN
 		INSERT INTO @dates
-		SELECT t.CalendarDate
+		SELECT @identifier,@start
+	END
+	ELSE IF(@recurrenceType = 1) -- daily
+	BEGIN
+		INSERT INTO @dates
+		SELECT @identifier,t.CalendarDate
 		FROM
 		(
 			SELECT CalendarDate,BusinessDay,Holiday,ROW_NUMBER() OVER (ORDER BY CalendarDate)  AS rownum
@@ -60,7 +65,7 @@ BEGIN
 		IF(@recurrenceDays IS NULL)
 			BEGIN	
 				INSERT INTO @dates
-		        SELECT c.CalendarDate
+		        SELECT @identifier,c.CalendarDate
 				FROM
 				(
 					SELECT Number,ROW_NUMBER() OVER (ORDER BY Number) AS rownum
@@ -86,7 +91,7 @@ BEGIN
 				WHERE v.type = 'P'
 			
 				INSERT INTO @dates
-		        SELECT c.CalendarDate
+		        SELECT @identifier,c.CalendarDate
 				FROM
 				(
 					SELECT Number,ROW_NUMBER() OVER (ORDER BY Number) AS rownum
@@ -108,7 +113,7 @@ BEGIN
 	ELSE IF(@recurrenceType = 3) -- monthly on day
 	BEGIN
 		INSERT INTO @dates
-		SELECT c.CalendarDate
+		SELECT @identifier,c.CalendarDate
 		FROM
 		(
 			SELECT Number,ROW_NUMBER() OVER (ORDER BY Number) AS rownum
@@ -136,7 +141,7 @@ BEGIN
 			END)
 
 		INSERT INTO @dates
-		SELECT c.CalendarDate
+		SELECT @identifier,c.CalendarDate
 		FROM
 		(
 			SELECT Number,ROW_NUMBER() OVER (ORDER BY Number) AS rownum
@@ -156,7 +161,7 @@ BEGIN
 	ELSE IF(@recurrenceType = 5) --yearly
 	BEGIN
 		INSERT INTO @dates
-		SELECT c.CalendarDate
+		SELECT @identifier,c.CalendarDate
 		FROM
 		(
 			SELECT Number,ROW_NUMBER() OVER (ORDER BY Number) AS rownum
@@ -178,7 +183,6 @@ BEGIN
     RETURN;
 END;
 GO
-
 
 /*****************************************************/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[rs_Scheduling_Event_Create]') AND type in (N'P', N'PC'))
